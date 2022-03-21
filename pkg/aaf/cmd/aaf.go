@@ -18,10 +18,10 @@ type AafOptions struct {
 }
 
 func NewDefaultAafCommand() *cobra.Command {
-	return NewDefaultAafCommandWithArgs(AafOptions{})
+	return NewDefaultAafCommandWithArgs(&AafOptions{})
 }
 
-func NewDefaultAafCommandWithArgs(o AafOptions) *cobra.Command {
+func NewDefaultAafCommandWithArgs(o *AafOptions) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "aaf",
 		Short: "anki-autofill",

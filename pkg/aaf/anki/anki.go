@@ -1,9 +1,9 @@
 package anki
 
 type Card struct {
-	items []string
+	Items []string
 }
 
 type Deck struct {
-	cards []Card
+	Cards []Card
 }

@@ -9,11 +9,14 @@ import (
 )
 
 type StarDictOptions struct {
-	filePath string
+	filePath   string
+	aafOptions *AafOptions
 }
 
-func NewDefaultStarDictCommand(aafOptions AafOptions) *cobra.Command {
-	o := StarDictOptions{}
+func NewDefaultStarDictCommand(aafOptions *AafOptions) *cobra.Command {
+	o := StarDictOptions{
+		aafOptions: aafOptions,
+	}
 
 	cmd := &cobra.Command{
 		Use:   "stardict",
@@ -32,11 +35,13 @@ Some dictionaries may not have a .dict or .idx file, but there should be an ifo 
 		Run: func(cmd *cobra.Command, args []string) {
 			err := o.Complete()
 			if err != nil {
+				fmt.Printf("stardict command initilization failed : %v\n", err)
+				return
 			}
 
 			err = o.Run()
 			if err != nil {
-
+				fmt.Printf("stardict command failed : %v\n", err)
 			}
 		},
 	}
@@ -59,13 +64,28 @@ func (o *StarDictOptions) Run() error {
 		return err
 	}
 
-	/*
-		TODO:
-		1. Read exported file from Anki
-		2. Loop items and translate items
-		3. Save file
-	*/
-	_ = dict.Translate("closely") // Delete me: it's just dummy call.
+	deck, err := o.aafOptions.Loader.Load()
+	if err != nil {
+		return err
+	}
+
+	for _, cards := range deck.Cards {
+		if len(cards.Items) == 0 {
+			continue
+		}
+
+		translatedItems := dict.Translate(cards.Items[0])
+		if len(translatedItems) == 0 || len(translatedItems[0].Parts) == 0 {
+			continue
+		}
+
+		cards.Items = append(cards.Items, string(translatedItems[0].Parts[0].Data))
+	}
+
+	err = o.aafOptions.Saver.Save(deck)
+	if err != nil {
+		return err
+	}
 
 	return nil
 }
