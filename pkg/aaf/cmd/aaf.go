@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	ankiLoader "github.com/makerdark98/aaf/pkg/aaf/anki/loader"
+	ankiSaver "github.com/makerdark98/aaf/pkg/aaf/anki/saver"
 	"github.com/spf13/cobra"
 )
 
@@ -12,6 +13,7 @@ type AafOptions struct {
 	OutputFilePath string
 	fileFormat     string
 	Loader         ankiLoader.Interface
+	Saver          ankiSaver.Interface
 	Verbose        bool
 }
 
@@ -49,6 +51,11 @@ func (o *AafOptions) Complete() error {
 	switch o.fileFormat {
 	case "tab-splitted":
 		o.Loader, err = ankiLoader.NewTabSplittedLoader(o.InputFilePath)
+		if err != nil {
+			return err
+		}
+
+		o.Saver, err = ankiSaver.NewTabSplittedSaver(o.OutputFilePath)
 		if err != nil {
 			return err
 		}
