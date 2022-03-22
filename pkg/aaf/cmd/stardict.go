@@ -69,17 +69,18 @@ func (o *StarDictOptions) Run() error {
 		return err
 	}
 
-	for _, cards := range deck.Cards {
-		if len(cards.Items) == 0 {
+	for i := range deck.Cards {
+		if len(deck.Cards[i].Items) == 0 {
 			continue
 		}
+		fmt.Println(deck.Cards[i].Items[0])
 
-		translatedItems := dict.Translate(cards.Items[0])
+		translatedItems := dict.Translate(deck.Cards[i].Items[0])
 		if len(translatedItems) == 0 || len(translatedItems[0].Parts) == 0 {
 			continue
 		}
 
-		cards.Items = append(cards.Items, string(translatedItems[0].Parts[0].Data))
+		deck.Cards[i].Items = append(deck.Cards[i].Items, string(translatedItems[0].Parts[0].Data))
 	}
 
 	err = o.aafOptions.Saver.Save(deck)

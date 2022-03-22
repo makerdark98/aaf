@@ -16,6 +16,6 @@ func NewTabSplittedSaver(filepath string) (*TabSplittedSaver, error) {
 	}, nil
 }
 
-func (l *TabSplittedSaver) Save(*anki.Deck) error {
+func (l *TabSplittedSaver) Save(deck *anki.Deck) error {
 	return fmt.Errorf("Not implemented")
 }

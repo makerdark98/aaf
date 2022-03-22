@@ -59,6 +59,10 @@ func (o *AafOptions) Complete() error {
 		if err != nil {
 			return err
 		}
+		o.Saver, err = ankiSaver.NewTabSplittedSaver(o.OutputFilePath)
+		if err != nil {
+			return err
+		}
 	}
 	return nil
 }
