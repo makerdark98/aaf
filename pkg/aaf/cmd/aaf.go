@@ -59,6 +59,13 @@ func (o *AafOptions) Complete() error {
 		if err != nil {
 			return err
 		}
+		break
+	case "anki2":
+		o.Loader, err = ankiLoader.NewAnki2Importer(o.InputFilePath)
+		if err != nil {
+			return err
+		}
+
 		o.Saver, err = ankiSaver.NewTabSplittedSaver(o.OutputFilePath)
 		if err != nil {
 			return err
