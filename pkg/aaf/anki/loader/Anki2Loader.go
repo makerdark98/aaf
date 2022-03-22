@@ -2,6 +2,7 @@ package loader
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/makerdark98/aaf/pkg/aaf/anki"
 	"gorm.io/driver/sqlite"
@@ -86,6 +87,10 @@ func (i *Anki2Importer) getCard() ([]card, error) {
 	return nil, fmt.Errorf("not implemented")
 }
 
+func splitFields(fields string) []string {
+	return strings.Split(fields, "\u001f")
+}
+
 type card struct {
 	gorm.Model
 	Id     int
@@ -109,7 +114,6 @@ type card struct {
 }
 
 type note struct {
-	gorm.Model
 	Id    int
 	Guid  string
 	Mid   int
@@ -117,7 +121,7 @@ type note struct {
 	Usn   int
 	Tags  string
 	Flds  string
-	Sfld  int
+	Sfld  string
 	Csum  int
 	Flags int
 	Data  string
