@@ -42,6 +42,7 @@ func NewDefaultAafCommandWithArgs(o *AafOptions) *cobra.Command {
 	cmd.PersistentFlags().BoolVarP(&o.Verbose, "verbose", "v", false, "Print verbose messages")
 
 	cmd.AddCommand(NewDefaultStarDictCommand(o))
+	cmd.AddCommand(NewDefaultTestCommand(o))
 
 	return cmd
 }
